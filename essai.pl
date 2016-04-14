@@ -7,10 +7,10 @@ use Switch;
 my $A=1; my $B=2 ;my $X=8; my $M=5 ; my $U=7;my $L=4;my $R=6;my $D=3;
 my $I;
 
-
-#my %table; #futur dico (si on veut toujours le faire)
 my $rep = "/home/Laurent/Téléchargements";
 my @table;
+
+#Ouverture des fichiers, définition du répertoire
 
 opendir(REP,$rep) or die "E/S : $!\n";
 
@@ -20,7 +20,7 @@ while(defined(my $fic=readdir REP)){
 	#~ print $fic; #ça donne tous les noms de fichiers .blt
 	switch($fic) {
 
-#Remplissage des premières colonnes => les BP
+#Remplissage de @table
 
 		  
 		  case /EcolA_Ecol/		{
@@ -38,7 +38,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3; 
 				$table[$A][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -60,7 +60,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3; 
 				$table[$B][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -82,7 +82,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3;
 				$table[$D][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -104,7 +104,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3;
 				$table[$L][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -126,7 +126,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3;
 				$table[$M][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -148,7 +148,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3;
 				$table[$R][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -170,7 +170,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3;
 				$table[$U][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -192,7 +192,7 @@ while(defined(my $fic=readdir REP)){
 			open FIC, "$fic" or warn "$f E/S: $!\n";
 			my $id2=""; #connaître l'ordre des fichiers
 			while(<FIC>){
-				$_ =~ /^(Ecol.*)\t*(Ecol.[^\t]*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t/; #1er identifiant de gène, puis deuxième, puis score
+				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3;
 				$table[$X][$I][$i]=$id1."\t".$id2."\t".$score."\n";
 				$i+=1;}
@@ -204,53 +204,59 @@ while(defined(my $fic=readdir REP)){
   }
 }
 
+
+#Recherche des BBH : 
+
+my @bbh;
+
+for(my $i=1 ; $i<351 ;$i+=1) { #EcolA_EcolA a 3203 lignes (selon gedit) mais le dernier gène du génome coeur est ligne 351, donc pendant qu'on code, pour pas faire trop de tour, on met 351
+	my $indice=0; #pour savoir quand on en a 7
+	my $res="\n"; #contient les bbh pour un même gène d'Ecola, mais ne s'affiche que si le compteur $indice est à 7
+	my $doublon="";
 	
-#~ print scalar(@table);
-#~ my $taille;
-#~ $taille=0;
-#~ foreach $i ($table[1][1]){
-	#~ $taille++;
-#~ }
-#~ print $size;
-
-my $double;
-
-
-for(my $i=1 ; $i<500 ;$i+=1) {my $ligne1=$table[$A][1][$i];
-	my $indice=0;
-	$ligne1 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
-	my $ident1=$1; my $scorebp1=$3;
-	for my $j (2..8) {
-		for(my $k=1 ; $k<500 ;$k+=1) {my $ligne2=$table[$A][$j][$k];
-		if ($ligne2 =~ /$ident1/) {
-			$ligne2 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/; my $scorebh1=$3; my $ident2=$2;
-			if ($scorebh1>$scorebp1) {
-				for(my $l=1 ; $l<500 ;$l+=1){
-				my $ligne3=$table[$j][1][$l];
-				if ($ligne3 =~ /$ident2/) {
-				$ligne3 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
-				my $scorebh2=$3;
-				for(my $m=1 ; $m<500 ;$m+=1){
-				my $ligne4=$table[$j][$j][$m];
-				if ($ligne4 =~ /$ident2/) {
-					$ligne4 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
-					my $scorebp2=$3;
-					if ($scorebh2>$scorebp2) {
-						$double="id :".$ident1.",".$scorebp1."; id :".$ident2.",".$scorebp2."; scores :".$scorebh1.",".$scorebh2."\n";
-						
-				}}}}}}}}}}
-
-
-
-
-
-
-
-
-
-
-
-
+	my $ligne1=$table[$A][1][$i];
+	$ligne1 =~ /^(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
+	my $ident1=$1; 
+	my $scorebp1=$3;
+	
+	for my $j (2..8) { #pour chaque autre souche...
+		for(my $k=1 ; $k<500 ;$k+=1) {my $ligne2=$table[$A][$j][$k]; #pour chaque ligne du fichier...
+			if ($ligne2 =~ /$ident1/) { #si la ligne contient mon $ident1...
+				$ligne2 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/; 
+				my $scorebh1=$3; 
+				my $ident2=$2;
+			
+				if ($scorebh1>$scorebp1) {
+					for(my $l=1 ; $l<500 ;$l+=1){ #pour chaque ligne du fichier...
+						my $ligne3=$table[$j][1][$l];
+						if ($ligne3 =~ /$ident2/) {
+							$ligne3 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
+							my $scorebh2=$3;
+							for(my $m=1 ; $m<500 ;$m+=1){ #pour chaque ligne du fichier...
+								my $ligne4=$table[$j][$j][$m];
+								if ($ligne4 =~ /$ident2/) {
+									$ligne4 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
+									my $scorebp2=$3;
+									if ($scorebh2>$scorebp2) {
+										my $resultat=$ident1."___".$ident2;
+										if ($resultat ne $doublon) {
+											$indice+=1;
+											$res=$res."\n".$resultat;
+											if ($indice==7) {
+												print $res;
+												} 
+											}
+										$doublon=$ident1."___".$ident2;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 
 __END__
