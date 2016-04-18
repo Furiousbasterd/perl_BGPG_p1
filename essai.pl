@@ -41,7 +41,8 @@ while(defined(my $fic=readdir REP)){
 				$_ =~ /^(Ecol.*)\t(Ecol.*)\t[0-9]*\.*[0-9]*\t([0-9]*)\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t[0-9]*\t.*\t.*\n/; #1er identifiant de gène, puis deuxième, puis score
 				my $id1 = $1; $id2 = $2; my $score = $3; 
 				$table[$A][$I][$i]=$id1."\t".$id2."\t".$score."\n";
-				$i+=1;}
+				$i+=1;
+				}
 			close FIC; 
 		  }
 		  
@@ -208,8 +209,9 @@ while(defined(my $fic=readdir REP)){
 #Recherche des BBH : 
 
 my @bbh;
+my $compteur=0;
 
-for(my $i=1 ; $i<351 ;$i+=1) { #EcolA_EcolA a 3203 lignes (selon gedit) mais le dernier gène du génome coeur est ligne 351, donc pendant qu'on code, pour pas faire trop de tour, on met 351
+for my $i (0..(my $val = @{$table[1][1]})) {  #EcolA_EcolA a 3203 lignes (selon gedit) mais le dernier gène du génome coeur est ligne 351, donc pendant qu'on code, pour pas faire trop de tour, on met 351
 	my $indice=0; #pour savoir quand on en a 7
 	my $res="\n"; #contient les bbh pour un même gène d'Ecola, mais ne s'affiche que si le compteur $indice est à 7
 	my $doublon="";
@@ -220,19 +222,19 @@ for(my $i=1 ; $i<351 ;$i+=1) { #EcolA_EcolA a 3203 lignes (selon gedit) mais le 
 	my $scorebp1=$3;
 	
 	for my $j (2..8) { #pour chaque autre souche...
-		for(my $k=1 ; $k<500 ;$k+=1) {my $ligne2=$table[$A][$j][$k]; #pour chaque ligne du fichier...
+		for my $k (0..(my $vall = @{$table[1][$j]})) {my $ligne2=$table[$A][$j][$k]; #pour chaque ligne du fichier...
 			if ($ligne2 =~ /$ident1/) { #si la ligne contient mon $ident1...
 				$ligne2 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/; 
 				my $scorebh1=$3; 
 				my $ident2=$2;
 			
 				if ($scorebh1>$scorebp1) {
-					for(my $l=1 ; $l<500 ;$l+=1){ #pour chaque ligne du fichier...
+					for my $l (0..(my $valll = @{$table[$j][1]})) { #pour chaque ligne du fichier...
 						my $ligne3=$table[$j][1][$l];
 						if ($ligne3 =~ /$ident2/) {
 							$ligne3 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
 							my $scorebh2=$3;
-							for(my $m=1 ; $m<500 ;$m+=1){ #pour chaque ligne du fichier...
+							for my $m (0..(my $vallll = @{$table[$j][$j]})) { #pour chaque ligne du fichier...
 								my $ligne4=$table[$j][$j][$m];
 								if ($ligne4 =~ /$ident2/) {
 									$ligne4 =~ /(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
@@ -244,6 +246,7 @@ for(my $i=1 ; $i<351 ;$i+=1) { #EcolA_EcolA a 3203 lignes (selon gedit) mais le 
 											$res=$res."\n".$resultat;
 											if ($indice==7) {
 												print $res;
+												$compteur+=1
 												} 
 											}
 										$doublon=$ident1."___".$ident2;
@@ -257,6 +260,18 @@ for(my $i=1 ; $i<351 ;$i+=1) { #EcolA_EcolA a 3203 lignes (selon gedit) mais le 
 			}
 		}
 	}
+
+print $compteur/8; #environ 236 gènes dans le G_coeur ; il faut virer les lignes vides su début, et aussi ça :
+#~ ___EcolB01.ECS0002
+#~ ___EcolB01.ECS0003
+#~ ___EcolB01.ECS0004
+#~ ___EcolB01.ECS0006
+#~ ___EcolB01.ECS0007
+#~ ___EcolB01.ECS0008
+#c'est ce qui apparait en premier résultat (??)
+#et bien sûr ecrire tout ça dans un beau fichier texte
+#attention : le code tourne un peu plus de 5 minutes
+
 
 
 __END__
