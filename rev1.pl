@@ -20,6 +20,9 @@ my @test;
 
 opendir(REP,$rep) or die "E/S : $!\n";
 
+print "/!\\ Pour avoir des résultats correcte ";
+print "les fichiers doivent suivre la même strucure\n";
+
 while(defined(my $fic=readdir REP)){
 	my $f="${rep}/$fic";
 	if($fic=~/.*\.blt/){
@@ -38,7 +41,7 @@ foreach(@pouet){
 		$indice++;
 	}		
 }
-my $indice_temp=0;
+my $indice_temp;
 my @test3;
 
 for(my $i=0;$i<$indice;$i++){
@@ -52,14 +55,28 @@ for(my $i=0;$i<$indice;$i++){
 		}	
 	}	
 }
-for(my $i=0;$i<8;$i++)
+
+for(my $i=0;$i<$indice;$i++)
 {
-	for(my $j=0;$j<8;$j++){
-	print $table[$i][$j]."\n";
+	for(my $j=0;$j<$indice;$j++){
+		my @temp_tab;
+		my $file_path = $table[$i][$j];
+		$indice_temp = 0;
+		open FILE, "$file_path";
+		my $garbage = <FILE>; #on se débarasse du header qui nous est inutile
+		while(<FILE>){
+			$temp_tab[$indice_temp] = $_;
+			$indice_temp++;
+		}
+		close(FILE);
+		$table[$i][$j] = [@temp_tab];
+	}
 }
+
+for (my $i=0; $i<$indice;$i++){
+	for(my $j=0;$j<$indice;$j++){
+		print $table[$i][$j][0]."\n";
+	}
 }
-
-
-
 
 
