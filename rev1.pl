@@ -2,26 +2,26 @@
 use strict; 
 use warnings;
 use Cwd;
-###################################################
-# ATTENTION: Code en chantier                     #
-# J'étais très inspiré pour les noms de variables,#
-# soyez indulgents, des bisous                    #
-###################################################
+#####################################################
+# ATTENTION: Code en chantier                       #
+# Les tableaux se remplissent dans l'ordre souhaité,#
+# self vs self en position 0 pour chaque souche		#
+# soyez indulgents, des bisous                      #
+#####################################################
 
 
 #Declaration des variables et tableaux
-
-my $A=1; my $B=2 ;my $X=8; my $M=5 ; my $U=7;my $L=4;my $R=6;my $D=3;
-my $I;
-
 my $rep = cwd();
 
 my @table;
 my @test;
 
-#Ouverture des fichiers, définition du répertoire
+#Ouverture des fichiers, définition du répertoire (obtention du chemin avec cwd()
 
 opendir(REP,$rep) or die "E/S : $!\n";
+
+print "/!\\ Pour avoir des résultats correcte ";
+print "les fichiers doivent suivre la même strucure\n";
 
 while(defined(my $fic=readdir REP)){
 	my $f="${rep}/$fic";
@@ -30,45 +30,53 @@ while(defined(my $fic=readdir REP)){
 	}
 }
 my @pouet = sort @test;
-my $lol=0;
-my $source = $pouet[1];
-my $indice2;
-#~ foreach(@pouet){
-	#~ $_=~/(.+)\_.*/;
-	#~ print "$_\n";
-	#~ if($1 eq $source){
-		#~ $table[$lol][$indice2++] = $_;
-	#~ }
-	#~ else{
-		#~ $indice2 = 0;
-		#~ $table[$lol++][$indice2] = $_;}
-	#~ $source = $1;
-	#~ print $lol."\t".$indice2."\n";
-#~ }
+my @test2;
+my $indice = 0;
 
 
 foreach(@pouet){
-	$_=~/(.+)\_.*/;
-	print"$1\n";
-	if($source=~/$1/){
-		$table[$lol][$indice2++] = $_;
-	}
-	else{
-		$indice2 = 0;
-		$table[$lol++][$indice2] = $_;
-		$source = $1;
+	$_=~/(.+)\_(.+)\..*/;
+	if($1 eq $2){
+		$table[$indice][0] = $_;
+		$indice++;
+	}		
+}
+my $indice_temp;
+my @test3;
+
+for(my $i=0;$i<$indice;$i++){
+	$table[$i][0]=~/(.+)\_.*/;
+	my $souche = $1;
+	$indice_temp = 1;
+	while(<@pouet>){
+		$_=~/(.+)\_(.+)\..*/;
+		if($1 eq $souche && $2 ne $souche){
+			$table[$i][$indice_temp++] = $_;
 		}	
+	}	
 }
 
-for my $row (@table){
-	for my $ligne (@$row){
-		print "$ligne\n";
+for(my $i=0;$i<$indice;$i++)
+{
+	for(my $j=0;$j<$indice;$j++){
+		my @temp_tab;
+		my $file_path = $table[$i][$j];
+		$indice_temp = 0;
+		open FILE, "$file_path";
+		my $garbage = <FILE>; #on se débarasse du header qui nous est inutile
+		while(<FILE>){
+			$temp_tab[$indice_temp] = $_;
+			$indice_temp++;
+		}
+		close(FILE);
+		$table[$i][$j] = [@temp_tab];
 	}
-	print"\n";
 }
 
-#~ 
-#~ for my $ligne (@pouet){
-	#~ print "$ligne\n";
-	#~ 
-#~ }
+for (my $i=0; $i<$indice;$i++){
+	for(my $j=0;$j<$indice;$j++){
+		print $table[$i][$j][0]."\n";
+	}
+}
+
+
