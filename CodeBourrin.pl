@@ -205,14 +205,13 @@ while(defined(my $fic=readdir REP)){
   }
 }
 
-
 #Recherche des BBH : 
 
 my $final;
-open ($final, ">bilan.txt") || die ("Vous ne pouvez pas créer le fichier \"bilan.txt\"");
+open ($final, ">bilan2.txt") || die ("Vous ne pouvez pas créer le fichier \"bilan.txt\"");
 
 #écriture dans mon .gff de l'entête
-print( $final "Résultats !\n\n" );
+print( $final "Le core genome d'Escherichia coli à partir de nos 8 souches de départ est constitué de :\n\nNB: le nombre de gènes le constituant est renseigné en fin de fichier\n\n" );
 
 
 my $compteur=0;
@@ -226,6 +225,7 @@ for my $i (0..(my $val = @{$table[1][1]})) {  #EcolA_EcolA a 3203 lignes (selon 
 	$ligne1 =~ /^(Ecol.*)\t(Ecol.*)\t([0-9]*)/;
 	my $ident1=$1; 
 	my $scorebp1=$3;
+	print ($final "$ligne1\n");
 	if ($ident1 ne ""){
 	
 	for my $j (2..8) { #pour chaque autre souche...
@@ -252,7 +252,7 @@ for my $i (0..(my $val = @{$table[1][1]})) {  #EcolA_EcolA a 3203 lignes (selon 
 											$indice+=1;
 											$res=$res."\n".$resultat;
 											if ($indice==7) {
-												print ($final "$ident1$res\n\n");
+												#~ print ($final "$ident1$res\n\n");
 												$compteur+=1
 												} 
 											}
@@ -269,7 +269,7 @@ for my $i (0..(my $val = @{$table[1][1]})) {  #EcolA_EcolA a 3203 lignes (selon 
 	}}
 
 print $compteur;
-
+print ($final "Le core génome est constitué de $compteur gènes.");
 
 
 
